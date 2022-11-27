@@ -1,39 +1,61 @@
 import "./App.css";
-import Car from "./car";
+import { Fragment, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Counter  from "./Components/Counter";
 import AuthCompo from "./Components/Authcompo";
-import sunitaimginApp from "./su.jpg";
-import su2 from "./su2.jpg";
-import su3 from "./su3.jpg";
+
 import GitProfs from "./githubDatabase";
-import SuCard from "./Card";
+
 import Layout from "./Layout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Cards from "./Cards"; 
+import Notification from "./Components/UI/Notification";
+import {fetchCartData} from './store/mysqlActions';
+import ProductShow from "./Components/ProductShow";
+
 const st = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 20, 21, 22];
-// aading my mekdflksd
-//Add pull request to make changes authorising by myself
+
+
+
 const ArrowFunc = (props) => {
   return (
     <div>
+
       <div class="text-center">
         <div class={props.sp} role="status">
           <span class="visually-hidden">Loading...</span>
           
-        </div>
+        </div> 
       </div>
       <Counter/>
       <AuthCompo/>
+    
     </div>
   );
 };
 
 function App() {
   let a = 10;
+  // // let isInitial=true;
+  const dispatch = useDispatch();
+  const showCart = useSelector((state) => state.authR.isLoggedIn);
+  const data=useSelector((state)=>state.mysqlSl);
 
+  
+
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (isInitial) {
+  //     isInitial = false;
+  //     return;
+  //   }
+
+  // }, [data, dispatch]);
 
   return (
-    
+    <Fragment>
       <BrowserRouter>
         <Routes>
           <Route>
@@ -49,31 +71,9 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <ProductShow/>
       
-    //   <div className="container text-center">
-    //    { st.map((id)=>{
-    //     return (
-    //        <div className="row" key={id}>
-              
-               
-    //          {
-    //           st.map((idx)=>{
-    //             return(
-
-    //               <Cards className="col" style={{margin:"3px"}} key={idx}/>
-    //             )
-    //           })
-    //          }
-    //       </div>
-    //     )
-          
-    //    })
-        
-    //     }
-          
-    
-    //   </div>
-    // </div>
+    </Fragment>
   );
 }
 
